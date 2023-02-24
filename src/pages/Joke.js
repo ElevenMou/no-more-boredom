@@ -10,9 +10,9 @@ const Joke = () => {
     const [joke, setJoke] = useState({ id: '', joke: '' });
     const [showPopup, setShowPopup] = useState(false);
 
-    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('NBM_IsAllowed_Admi'));
+    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('IsAllowed'));
     const { isAdmin } = useParams();
-    const password = 'Admin';
+    const password = 'password';
 
     useEffect(() => {
         const fetchJoke = async () => {
@@ -32,7 +32,7 @@ const Joke = () => {
         e.preventDefault();
         if(e.target.password.value === password) {
             setIsAllowed(true);
-            sessionStorage.setItem('NBM_IsAllowed_Admi', true);
+            sessionStorage.setItem('IsAllowed', true);
         }
     }
 

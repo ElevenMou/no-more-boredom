@@ -72,16 +72,24 @@ const Jokes = () => {
     }
 
     /************************* Popup share **************************/
-    const togglePopup = (id, title, contentFront) => {
+    const openPopup = (id, title, contentFront) => {
         setShareJoke({id: id, title: title, contentFront: contentFront, contentBack: "", isRotated: false});
-        setShowPopup(prev => !prev);
     }
 
+    useEffect(() => {
+        if(shareJoke.contentFront) {
+            setShowPopup(true);
+        }
+    }, [shareJoke])
+
+    const closePopup = () => {
+        setShowPopup(false);
+    }
 
     return (
         <>
             <Random end={1536} onRandomItem={pickRandomJoke} />
-            <Popup showPopup={showPopup} closePopup={togglePopup}>
+            <Popup showPopup={showPopup} closePopup={closePopup}>
                 <ShareContent id={shareJoke.id} title={shareJoke.title} contentFront={shareJoke.contentFront} />
             </Popup>
 
@@ -100,7 +108,7 @@ const Jokes = () => {
                 <ResponsiveMasonry columnsCountBreakPoints={{ 400: 1, 900: 2, 1350: 3 }} >
                     <Masonry gutter='40px'>
                         {jokes && jokes.map((joke, index) =>
-                            <Card id={joke.id} title='Joke' contentFront={joke.joke} key={index} isRotated={false} onShare={togglePopup} />
+                            <Card id={joke.id} title='Joke' contentFront={joke.joke} key={index} isRotated={false} onShare={openPopup} />
                         )}
                     </Masonry>
                 </ResponsiveMasonry>

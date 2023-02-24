@@ -10,16 +10,15 @@ const Riddle = () => {
     const [riddle, setRiddle] = useState({ id: '', title: '', question: '', answer: '' });
     const [showPopup, setShowPopup] = useState(false);
 
-    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('NBM_IsAllowed_Admi'));
+    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('IsAllowed'));
     const { isAdmin } = useParams();
-    const password = 'Admin';
+    const password = 'password';
 
     useEffect(() => {
         const fetchRiddle = async () => {
             let riddleData = await getRiddleById(riddleID);
             setRiddle(riddleData);
         }
-        /* document.documentElement.style.setProperty('--color-background', 'linear-gradient(180deg, var(--color-secondary) 0%, var(--color-secondary2) 100%)'); */
         fetchRiddle();
     }, [riddleID])
 
@@ -32,7 +31,7 @@ const Riddle = () => {
         e.preventDefault();
         if (e.target.password.value === password) {
             setIsAllowed(true);
-            sessionStorage.setItem('NBM_IsAllowed_Admi', true);
+            sessionStorage.setItem('IsAllowed', true);
         }
     }
 

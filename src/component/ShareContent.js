@@ -19,10 +19,9 @@ import {
     TwitterIcon,
     WhatsappIcon,
 } from "react-share";
-import Riddle from '../pages/Riddle'
 
 const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownloaded = false }) => {
-    const url = window.location.protocol + '//' + window.location.host + '/' + id;
+    const url = window.location.protocol + '//' + window.location.host + (isRotated ? '/riddles/' + id : '/jokes/' + id);
     const [side, setSide] = useState(0);
 
     const saveImage = () => {
