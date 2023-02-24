@@ -7,11 +7,13 @@ import Jokes from "./pages/Jokes";
 import Riddles from "./pages/Riddles";
 import Joke from './pages/Joke';
 import Riddle from './pages/Riddle';
+import SocialLinks from './component/SocialLinks';
 function App() {
   return (
     <div className="app">
       <Header />
       <main className='app-main'>
+        <SocialLinks />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/jokes' element={<Jokes />} />

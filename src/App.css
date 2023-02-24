@@ -494,6 +494,22 @@ a:has(.home-card) + a:has(.home-card) {
   margin: 30px auto;
 }
 
+/******************************************* Social links *******************************************/
+.social-links {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 60px;
+}
+
+.social-links a + a {
+  margin-top: 10px;
+}
+
 /* Small devices */
 
 @media only screen and (max-width: 760px) {
@@ -527,39 +543,44 @@ a:has(.home-card) + a:has(.home-card) {
     width: 40px;
   }
   /******************************************* Home *******************************************/
-.home {
-  justify-content: start;
-  padding-bottom: 50px;
-}
+  .home {
+    justify-content: start;
+    padding-bottom: 50px;
+  }
 
-.home__title {
-  font-size: 40px;
-  text-align: center;
-}
+  .home__title {
+    font-size: 40px;
+    text-align: center;
+  }
 
-.home__cards {
-  flex-direction: column;
-  align-items: center;
-}
+  .home__cards {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.home-card {
-  width: 250px;
-  height: 250px;
-}
+  .home-card {
+    width: 250px;
+    height: 250px;
+  }
 
+  a:has(.home-card) + a:has(.home-card) {
+    margin-left: 0;
+    margin-top: 20px;
+  }
 
-a:has(.home-card) + a:has(.home-card) {
-  margin-left: 0;
-  margin-top: 20px;
-}
+  .home-card__image {
+    width: 100px;
+    height: 100px;
+  }
 
-.home-card__image {
-  width: 100px;
-  height: 100px;
-}
-
-.home-card__title {
-  font-size: 40px;
-}
-
+  .home-card__title {
+    font-size: 40px;
+  }
+  /******************************************* Social links *******************************************/
+  .social-links {
+    top: var(--header-size);
+    transform: unset;
+    padding: 5px;
+    width: 40px;
+  }
 }
