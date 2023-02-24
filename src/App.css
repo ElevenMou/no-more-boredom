@@ -399,7 +399,9 @@ a:has(.home-card) + a:has(.home-card) {
 
 /******************************************* Share *******************************************/
 
-.share-content {
+.share-content:has(.share-content__img-container) {
+  display: flex;
+  justify-content: space-around;
 }
 
 .share-content__title {
@@ -414,11 +416,13 @@ a:has(.home-card) + a:has(.home-card) {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 25px;
+  box-shadow: 0 0 60px rgb(0 0 0 / 40%);
 }
 
 .share-content__img {
-  width: 500px;
-  height: 500px;
+  width: calc(100vh - 90px);
+  height: calc(100vh - 90px);
   position: relative;
   background: var(--color-background);
 }
@@ -429,6 +433,15 @@ a:has(.home-card) + a:has(.home-card) {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
+  padding: 35px;
+}
+
+.share-content__img .card .card__content {
+  font-size: 34px;
+}
+
+.share-content__img .card .card__title {
+  font-size: 36px;
 }
 
 .share-content__logo {
@@ -436,7 +449,8 @@ a:has(.home-card) + a:has(.home-card) {
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 70%;
+  width: 60%;
+
 }
 
 .share-content__share {
@@ -447,18 +461,28 @@ a:has(.home-card) + a:has(.home-card) {
   flex-wrap: wrap;
 }
 
-.share-content__share button + button {
+.share-content__share button + button,
+.share-content__share button + a,
+.share-content__share a + a,
+.share-content__share a + button {
   margin-left: 10px;
 }
 
 .share-content__download {
-  width: 31px;
-  height: 31px;
-  background: var(--color-background);
+  width: 60px;
+    height: 60px;
+  background: var(--color-secondary);
   border-radius: 50%;
   border: none;
   padding: 6px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.share-content__download img {
+  width: 80%;
 }
 
 .share-content__socials {
@@ -476,17 +500,17 @@ a:has(.home-card) + a:has(.home-card) {
 .share-content__socials > div {
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
 }
 
 .share-content__socials > div + div {
-  margin-left: 15px;
+  margin-left: 20px;
 }
 
 .share-content__socials > div img {
   margin-right: 8px;
-  width: 30px;
+  width: 40px;
 }
 
 .card-display {

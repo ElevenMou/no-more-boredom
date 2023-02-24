@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Card from '../component/Card';
 import Popup from '../component/Popup';
 import ShareContent from '../component/ShareContent';
@@ -9,6 +9,7 @@ const Riddle = () => {
     const { riddleID } = useParams();
     const [riddle, setRiddle] = useState({ id: '', title: '', question: '', answer: '' });
     const [showPopup, setShowPopup] = useState(false);
+    const navigate = useNavigate();
 
     const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('IsAllowed'));
     const { isAdmin } = useParams();
@@ -35,17 +36,22 @@ const Riddle = () => {
         }
     }
 
+    const nextRiddle = () => {
+        navigate('/riddles/' + ++riddle.id + '/admin');
+    }
+
+    const prevRiddle = () => {
+        if(riddle.id > 1)
+        navigate('/riddles/' + --riddle.id + '/admin');
+    }
+
     return (
         <>
             <h1 className='hidden-heading'>Riddle</h1>
-            <Popup showPopup={showPopup} closePopup={togglePopup}>
-                <ShareContent id={riddle.id} title={riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} isDownloaded={isAllowed && isAdmin === 'admin'} />
-            </Popup>
+
             {isAdmin === 'admin' ?
                 isAllowed ?
-                    <div className='card-display'>
-                        <Card title={riddle.title === '' ? 'Riddle' : riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} onShare={togglePopup} />
-                    </div>
+                    <ShareContent id={riddle.id} title={riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} isDownloaded={isAllowed && isAdmin === 'admin'} onNext={nextRiddle} onBack={prevRiddle} />
                     :
                     <form onSubmit={adminLogin}>
                         <div className='form-group'>
@@ -55,9 +61,14 @@ const Riddle = () => {
                         <button type='submit' className='btn' >Login</button>
                     </form>
                 :
-                <div className='card-display'>
-                    <Card title={riddle.title === '' ? 'Riddle' : riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} onShare={togglePopup} />
-                </div>
+                <>
+                    <Popup showPopup={showPopup} closePopup={togglePopup}>
+                        <ShareContent id={riddle.id} title={riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} isDownloaded={isAllowed && isAdmin === 'admin'} />
+                    </Popup>
+                    <div className='card-display'>
+                        <Card title={riddle.title === '' ? 'Riddle' : riddle.title} contentFront={riddle.question} contentBack={riddle.answer} isRotated={true} onShare={togglePopup} />
+                    </div>
+                </>
             }
         </>
     )

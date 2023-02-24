@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Logo from "../assets/logo.svg"
 import DownloadIcon from "../assets/IconDownload.svg"
+import RotateIcon from "../assets/IconRotate.svg"
+import NextIcon from "../assets/IconNext.svg"
+import BackIcon from "../assets/IconBack.svg"
 import FbIcon from "../assets/facebook.svg"
 import InstaIcon from "../assets/instagram.svg"
 import download from 'downloadjs'
@@ -19,10 +22,12 @@ import {
     TwitterIcon,
     WhatsappIcon,
 } from "react-share";
+import { useNavigate, Link } from 'react-router-dom'
 
-const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownloaded = false }) => {
+const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownloaded = false, onNext, onBack }) => {
     const url = window.location.protocol + '//' + window.location.host + (isRotated ? '/riddles/' + id : '/jokes/' + id);
     const [side, setSide] = useState(0);
+    const navigate = useNavigate();
 
     const saveImage = () => {
         toPng(document.getElementById('ImageFrontTarget'))
@@ -37,7 +42,7 @@ const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownl
 
     return (
         <div className='share-content'>
-            <div className='share-content__title'>Share</div>
+
             {isDownloaded ?
                 <>
                     <div className='share-content__img-container'>
@@ -75,35 +80,48 @@ const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownl
                         </div>
                     </div>
                     <div className='share-content__share'>
+                        {id > 1 &&
+                            <button className='share-content__download' onClick={() => onBack()} >
+                                <img src={BackIcon} alt="back" />
+                            </button>
+                        }
                         <button onClick={saveImage} className='share-content__download'>
                             <img src={DownloadIcon} alt="dowload" />
                         </button>
                         {isRotated &&
-                            <button onClick={switchSide} className='btn'>Switch</button>
+                            <button onClick={switchSide} className='share-content__download'>
+                                <img src={RotateIcon} alt="rotate" />
+                            </button>
                         }
+                        <button className='share-content__download' onClick={() => onNext()} >
+                            <img src={NextIcon} alt="next" />
+                        </button>
                     </div>
                 </>
                 :
-                <div className='share-content__share'>
-                    <FacebookShareButton url={url} quote={title}>
-                        <FacebookIcon size={32} round />
-                    </FacebookShareButton>
-                    <LinkedinShareButton url={url} quote={title}>
-                        <LinkedinIcon size={32} round />
-                    </LinkedinShareButton>
-                    <RedditShareButton url={url} quote={title}>
-                        <RedditIcon size={32} round />
-                    </RedditShareButton>
-                    <TelegramShareButton url={url} quote={title}>
-                        <TelegramIcon size={32} round />
-                    </TelegramShareButton>
-                    <TwitterShareButton url={url} quote={title}>
-                        <TwitterIcon size={32} round />
-                    </TwitterShareButton>
-                    <WhatsappShareButton url={url} quote={title}>
-                        <WhatsappIcon size={32} round />
-                    </WhatsappShareButton>
-                </div>
+                <>
+                    <div className='share-content__title'>Share</div>
+                    <div className='share-content__share'>
+                        <FacebookShareButton url={url} quote={title}>
+                            <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+                        <LinkedinShareButton url={url} quote={title}>
+                            <LinkedinIcon size={32} round />
+                        </LinkedinShareButton>
+                        <RedditShareButton url={url} quote={title}>
+                            <RedditIcon size={32} round />
+                        </RedditShareButton>
+                        <TelegramShareButton url={url} quote={title}>
+                            <TelegramIcon size={32} round />
+                        </TelegramShareButton>
+                        <TwitterShareButton url={url} quote={title}>
+                            <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+                        <WhatsappShareButton url={url} quote={title}>
+                            <WhatsappIcon size={32} round />
+                        </WhatsappShareButton>
+                    </div>
+                </>
             }
         </div>
     )
