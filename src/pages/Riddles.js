@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Random from '../component/Random';
 import Popup from '../component/Popup';
 import ShareContent from '../component/ShareContent';
+import ReactGA from "react-ga4";
 
 const Riddles = () => {
     const [riddles, setRiddles] = useState([]);
@@ -17,6 +18,8 @@ const Riddles = () => {
 
     /************************* Initialize **************************/
     useEffect(() => {
+        document.title = "Riddles";
+        ReactGA.send({ hitType: "pageview", page: "/riddles" });
         const fetchRiddles = async () => {
             const riddlesData = await getRiddles(1, '');
             setRiddles(riddlesData);
@@ -26,6 +29,7 @@ const Riddles = () => {
 
     /************************* Search **************************/
     useEffect(() => {
+        ReactGA.event({category: 'riddles', action: 'search', label: 'Search for riddle: ' + search});
         const fetchRiddles = async () => {
             if (search.length > 5) {
                 const riddlesData = await getRiddles(1, search);
@@ -71,6 +75,7 @@ const Riddles = () => {
 
     /************************* Popup share **************************/
     const openPopup = (id, title, contentFront, contentBack) => {
+        ReactGA.event({category: 'riddles', action: 'share', label: 'share riddle ' + id});
         setShareRiddle({id: id, title: title, contentFront: contentFront, contentBack: contentBack, isRotated: true});
     }
 

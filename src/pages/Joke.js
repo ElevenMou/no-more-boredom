@@ -4,6 +4,7 @@ import Card from '../component/Card';
 import Popup from '../component/Popup';
 import ShareContent from '../component/ShareContent';
 import { getJokeById } from '../utils/fetchData';
+import ReactGA from "react-ga4";
 
 const Joke = () => {
     const { jokeID } = useParams();
@@ -11,11 +12,13 @@ const Joke = () => {
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
 
-    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('IsAllowed'));
+    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('Crypted_NBM_IsAllowed_Admin_uJzdeEZFZFezfe8748vztT6'));
     const { isAdmin } = useParams();
-    const password = 'password';
+    const password = 'uJ!K54GUitT6';
 
     useEffect(() => {
+        document.title = "Joke";
+        ReactGA.send({ hitType: "pageview", page: '/jokes/' + jokeID });
         const fetchJoke = async () => {
             let jokeData = await getJokeById(jokeID);
             setJoke(jokeData);
@@ -26,6 +29,7 @@ const Joke = () => {
 
     /************************* Popup share **************************/
     const togglePopup = () => {
+        ReactGA.event({category: 'jokes', action: 'share', label: 'share joke ' + jokeID});
         setShowPopup(prev => !prev);
     }
 
@@ -33,7 +37,7 @@ const Joke = () => {
         e.preventDefault();
         if (e.target.password.value === password) {
             setIsAllowed(true);
-            sessionStorage.setItem('IsAllowed', true);
+            sessionStorage.setItem('Crypted_NBM_IsAllowed_Admin_uJzdeEZFZFezfe8748vztT6', true);
         }
     }
 

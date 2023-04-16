@@ -4,6 +4,7 @@ import Card from '../component/Card';
 import Popup from '../component/Popup';
 import ShareContent from '../component/ShareContent';
 import { getRiddleById } from '../utils/fetchData';
+import ReactGA from "react-ga4";
 
 const Riddle = () => {
     const { riddleID } = useParams();
@@ -11,11 +12,13 @@ const Riddle = () => {
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
 
-    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('IsAllowed'));
+    const [isAllowed, setIsAllowed] = useState(sessionStorage.getItem('Crypted_NBM_IsAllowed_Admin_uJzdeEZFZFezfe8748vztT6'));
     const { isAdmin } = useParams();
-    const password = 'password';
+    const password = 'uJ!K54GUitT6';
 
     useEffect(() => {
+        document.title = "Riddle";
+        ReactGA.send({ hitType: "pageview", page: '/jokes/' + riddleID });
         const fetchRiddle = async () => {
             let riddleData = await getRiddleById(riddleID);
             setRiddle(riddleData);
@@ -24,7 +27,8 @@ const Riddle = () => {
     }, [riddleID])
 
     /************************* Popup share **************************/
-    const togglePopup = (id, title, contentFront, contentBack) => {
+    const togglePopup = () => {
+        ReactGA.event({category: 'riddles', action: 'share', label: 'share riddle ' + riddleID});
         setShowPopup(prev => !prev);
     }
 
@@ -32,7 +36,7 @@ const Riddle = () => {
         e.preventDefault();
         if (e.target.password.value === password) {
             setIsAllowed(true);
-            sessionStorage.setItem('IsAllowed', true);
+            sessionStorage.setItem('Crypted_NBM_IsAllowed_Admin_uJzdeEZFZFezfe8748vztT6', true);
         }
     }
 

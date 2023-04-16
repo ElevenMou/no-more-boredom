@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Random from '../component/Random';
 import Popup from '../component/Popup';
 import ShareContent from '../component/ShareContent';
+import ReactGA from "react-ga4";
 
 const Jokes = () => {
     const [jokes, setJokes] = useState([]);
@@ -13,12 +14,14 @@ const Jokes = () => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [showPopup, setShowPopup] = useState(false);
-    const [shareJoke, setShareJoke] = useState({id: 0, title: "",contentFront: "", contentBack: "", isRotated: false});
+    const [shareJoke, setShareJoke] = useState({ id: 0, title: "", contentFront: "", contentBack: "", isRotated: false });
 
-    
+
 
     /************************* Initialize **************************/
     useEffect(() => {
+        document.title = "Jokes";
+        ReactGA.send({ hitType: "pageview", page: "/jokes" });
         const fetchJokes = async () => {
             const jokesData = await getJokes(1, '');
             setJokes(jokesData);
@@ -28,6 +31,7 @@ const Jokes = () => {
 
     /************************* Search **************************/
     useEffect(() => {
+        ReactGA.event({ category: 'jokes', action: 'search', label: 'Search for joke: ' + search });
         const fetchJokes = async () => {
             if (search.length > 5) {
                 const jokesData = await getJokes(1, search);
@@ -52,16 +56,19 @@ const Jokes = () => {
     }
 
     useEffect(() => {
-        const fetchJokes = async () => {
-            const jokesData = await getJokes(page, search);
-            if (jokesData.length < 30) {
-                setHasMore(false);
-            } else {
-                setHasMore(true);
+        if (page > 1) {
+            const fetchJokes = async () => {
+                const jokesData = await getJokes(page, search);
+                if (jokesData.length < 30) {
+                    setHasMore(false);
+                } else {
+                    setHasMore(true);
+                }
+                setJokes((prev) => [...prev, ...jokesData]);
             }
-            setJokes((prev) => [...prev, ...jokesData]);
+            fetchJokes();
         }
-        fetchJokes();
+
     }, [page])
 
     /************************* Random pick **************************/
@@ -73,11 +80,12 @@ const Jokes = () => {
 
     /************************* Popup share **************************/
     const openPopup = (id, title, contentFront) => {
-        setShareJoke({id: id, title: title, contentFront: contentFront, contentBack: "", isRotated: false});
+        ReactGA.event({ category: 'jokes', action: 'share', label: 'share joke ' + id });
+        setShareJoke({ id: id, title: title, contentFront: contentFront, contentBack: "", isRotated: false });
     }
 
     useEffect(() => {
-        if(shareJoke.contentFront) {
+        if (shareJoke.contentFront) {
             setShowPopup(true);
         }
     }, [shareJoke])

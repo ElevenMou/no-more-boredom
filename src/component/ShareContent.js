@@ -22,13 +22,10 @@ import {
     TwitterIcon,
     WhatsappIcon,
 } from "react-share";
-import { useNavigate, Link } from 'react-router-dom'
 
 const ShareContent = ({ id, title, contentFront, contentBack, isRotated, isDownloaded = false, onNext, onBack }) => {
     const url = window.location.protocol + '//' + window.location.host + (isRotated ? '/riddles/' + id : '/jokes/' + id);
     const [side, setSide] = useState(0);
-    const navigate = useNavigate();
-
     const saveImage = () => {
         toPng(document.getElementById('ImageFrontTarget'))
             .then(function (dataUrl) {
